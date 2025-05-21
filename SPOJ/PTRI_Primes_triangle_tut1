@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <cstring>
+
+using namespace std;
+
+
+
+
+int main() {
+    
+    int t;
+    cin >> t;
+    vector<int> values;
+    int max1 = 0;
+    for (int x=0; x<t;x++) {
+        int m;
+        cin >> m;
+        values.push_back(m);
+        max1 = max(m, max1);
+    }
+    int n = max1;
+    vector<bool> is_prime(n+1, true);
+    is_prime[0]=is_prime[1]=false;
+    for (int i =2; i<=n; i++) {
+        if (is_prime[i]) {
+            for (long long j = (long long) i*i; j<=n; j+=i) {
+                is_prime[j] = false;
+            }
+        }
+    }
+
+    vector<int> index_prime(n+1, 0);
+    int index = 1;
+    for (int x=0; x<=n; x++) {
+        if(is_prime[x]) {
+            index_prime[x] = index;
+            index+=1;
+        }
+    }
+
+    for (int x=0; x<t; x++) {
+        int p = index_prime[values[x]];
+        
+        if (p==0) {
+            cout << -1 << "\n";
+        } else if (p==1) {
+            cout << 1 << " " << 0 << "\n";
+        } else {
+        int row_n = floor((-1 + pow(1 + 8*p , 0.5))/2) + 1;
+        int col_n = p - ((row_n - 1) * row_n) / 2;
+        
+        if (col_n==0) {
+            col_n=row_n-1;
+            row_n-=1;
+        }
+        cout << row_n << " " << col_n << "\n";
+        }
+
+
+    }
+    return 0;
+ } 
